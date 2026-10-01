@@ -1,0 +1,30 @@
+{
+  "name": "qaflow/backend",
+  "description": "QAFlow REST API — SQA / Test Management backend.",
+  "type": "project",
+  "license": "proprietary",
+  "require": {
+    "php": ">=8.1",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "ext-fileinfo": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "QAFlow\\": "src/"
+    },
+    "files": [
+      "src/bootstrap.php"
+    ]
+  },
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true
+  },
+  "scripts": {
+    "serve": "php -S localhost:8000 -t public",
+    "seed-users": "php scripts/seed-users.php"
+  }
+}
