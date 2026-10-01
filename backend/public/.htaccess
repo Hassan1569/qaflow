@@ -1,0 +1,36 @@
+# QAFlow — Apache configuration for the backend public directory.
+# Rewrites every non-file request to index.php so the router can handle it.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # If the request is already a real file or directory, serve it directly.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Otherwise, forward to the front controller.
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Security headers
+# ---------------------------------------------------------------------------
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "DENY"
+    Header always set Referrer-Policy "no-referrer"
+    Header always set X-XSS-Protection "0"
+</IfModule>
+
+# ---------------------------------------------------------------------------
+# Disable directory listing
+# ---------------------------------------------------------------------------
+Options -Indexes
+
+# ---------------------------------------------------------------------------
+# Protect sensitive files that should never be served even if requested.
+# ---------------------------------------------------------------------------
+<FilesMatch "^\.env|\.env\..*|composer\.(json|lock)|README\.md$">
+    Require all denied
+</FilesMatch>
