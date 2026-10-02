@@ -23,6 +23,7 @@ require __DIR__ . '/../bootstrap.php';
 
 use QAFlow\Core\AppException;
 use QAFlow\Core\Container;
+use QAFlow\Core\ContainerAccess;
 use QAFlow\Core\Handler;
 use QAFlow\Core\Router;
 use QAFlow\Middleware\CorsMiddleware;
@@ -37,6 +38,7 @@ Handler::install();
 // Build the container and register core services.
 // ---------------------------------------------------------------------------
 $container = new Container();
+ContainerAccess::set($container);
 require __DIR__ . '/../config/container.php';
 $container->boot();
 
