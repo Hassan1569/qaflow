@@ -12,6 +12,9 @@ declare(strict_types=1);
 use QAFlow\Config\Config;
 use QAFlow\Core\Container;
 
+use QAFlow\Middleware\AuthMiddleware;
+use QAFlow\Middleware\RoleMiddleware;
+
 use QAFlow\Repositories\UserRepository;
 use QAFlow\Repositories\ProjectRepository;
 use QAFlow\Repositories\RequirementRepository;
@@ -79,6 +82,12 @@ $container->singleton(EnvironmentRepository::class, fn () => new EnvironmentRepo
 $container->singleton(AttachmentRepository::class,  fn () => new AttachmentRepository());
 $container->singleton(CommentRepository::class,     fn () => new CommentRepository());
 $container->singleton(ActivityRepository::class,    fn () => new ActivityRepository());
+
+// ---------------------------------------------------------------------------
+// Middleware
+// ---------------------------------------------------------------------------
+$container->singleton(AuthMiddleware::class, fn ($c) => new AuthMiddleware($c));
+$container->singleton(RoleMiddleware::class, fn () => new RoleMiddleware());
 
 // ---------------------------------------------------------------------------
 // Services.
@@ -178,24 +187,24 @@ $container->singleton(AiSuggestionService::class, fn () => new AiSuggestionServi
 // ---------------------------------------------------------------------------
 // Controllers.
 // ---------------------------------------------------------------------------
-$container->singleton(AuthController::class,         fn ($c) => new AuthController($c->get(AuthService::class)));
-$container->singleton(UserController::class,         fn ($c) => new UserController($c->get(UserRepository::class)));
-$container->singleton(ProjectController::class,      fn ($c) => new ProjectController($c->get(ProjectService::class)));
-$container->singleton(RequirementController::class,  fn ($c) => new RequirementController($c->get(RequirementService::class)));
-$container->singleton(TestSuiteController::class,    fn ($c) => new TestSuiteController($c->get(TestCaseService::class)));
-$container->singleton(TestCaseController::class,     fn ($c) => new TestCaseController($c->get(TestCaseService::class)));
-$container->singleton(TestPlanController::class,     fn ($c) => new TestPlanController($c->get(TestPlanService::class)));
-$container->singleton(TestRunController::class,      fn ($c) => new TestRunController($c->get(TestRunService::class)));
-$container->singleton(TestExecutionController::class,fn ($c) => new TestExecutionController($c->get(ExecutionService::class)));
-$container->singleton(DefectController::class,       fn ($c) => new DefectController($c->get(DefectService::class)));
-$container->singleton(EnvironmentController::class,  fn ($c) => new EnvironmentController($c->get(EnvironmentRepository::class)));
-$container->singleton(AttachmentController::class,   fn ($c) => new AttachmentController($c->get(AttachmentService::class)));
-$container->singleton(CommentController::class,      fn ($c) => new CommentController($c->get(CommentRepository::class)));
-$container->singleton(DashboardController::class,    fn ($c) => new DashboardController($c->get(DashboardService::class)));
-$container->singleton(ReportController::class,       fn ($c) => new ReportController($c->get(ReportService::class)));
-$container->singleton(TraceabilityController::class, fn ($c) => new TraceabilityController($c->get(TraceabilityService::class)));
-$container->singleton(ActivityController::class,     fn ($c) => new ActivityController($c->get(ActivityService::class)));
-$container->singleton(AutomationController::class,   fn ($c) => new AutomationController($c->get(AutomationService::class)));
+$container->singleton(AuthController::class,          fn ($c) => new AuthController($c->get(AuthService::class)));
+$container->singleton(UserController::class,          fn ($c) => new UserController($c->get(UserRepository::class)));
+$container->singleton(ProjectController::class,       fn ($c) => new ProjectController($c->get(ProjectService::class)));
+$container->singleton(RequirementController::class,   fn ($c) => new RequirementController($c->get(RequirementService::class)));
+$container->singleton(TestSuiteController::class,     fn ($c) => new TestSuiteController($c->get(TestCaseService::class)));
+$container->singleton(TestCaseController::class,      fn ($c) => new TestCaseController($c->get(TestCaseService::class)));
+$container->singleton(TestPlanController::class,      fn ($c) => new TestPlanController($c->get(TestPlanService::class)));
+$container->singleton(TestRunController::class,       fn ($c) => new TestRunController($c->get(TestRunService::class)));
+$container->singleton(TestExecutionController::class, fn ($c) => new TestExecutionController($c->get(ExecutionService::class)));
+$container->singleton(DefectController::class,        fn ($c) => new DefectController($c->get(DefectService::class)));
+$container->singleton(EnvironmentController::class,   fn ($c) => new EnvironmentController($c->get(EnvironmentRepository::class)));
+$container->singleton(AttachmentController::class,    fn ($c) => new AttachmentController($c->get(AttachmentService::class)));
+$container->singleton(CommentController::class,       fn ($c) => new CommentController($c->get(CommentRepository::class)));
+$container->singleton(DashboardController::class,     fn ($c) => new DashboardController($c->get(DashboardService::class)));
+$container->singleton(ReportController::class,        fn ($c) => new ReportController($c->get(ReportService::class)));
+$container->singleton(TraceabilityController::class,  fn ($c) => new TraceabilityController($c->get(TraceabilityService::class)));
+$container->singleton(ActivityController::class,      fn ($c) => new ActivityController($c->get(ActivityService::class)));
+$container->singleton(AutomationController::class,    fn ($c) => new AutomationController($c->get(AutomationService::class)));
 
 // ---------------------------------------------------------------------------
 // Feature flags — resolved once.
