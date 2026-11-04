@@ -1,14 +1,6 @@
 <?php
 declare(strict_types=1);
 
-/**
- * QAFlow — Dashboard service.
- *
- * Aggregates metrics for the dashboard. Everything is derived from the
- * database; no numbers are hard-coded. The summary is per-project when a
- * project_id is supplied, and covers all accessible projects otherwise.
- */
-
 namespace QAFlow\Services;
 
 use QAFlow\Core\AppException;
@@ -44,23 +36,16 @@ final class DashboardService
         $this->environments = $environments;
     }
 
-    /**
-     * @return array<string,mixed>
-     */
     public function summary(int $userId, string $role, ?int $projectId = null): array
     {
         if ($projectId !== null && $projectId > 0) {
             $this->assertCanRead($projectId, $userId, $role);
-
             return $this->summaryForProject($projectId);
         }
 
         return $this->summaryForAllProjects($userId, $role);
     }
 
-    /**
-     * @return array<string,mixed>
-     */
     private function summaryForProject(int $projectId): array
     {
         $project = $this->projects->findById($projectId);
@@ -96,11 +81,9 @@ final class DashboardService
         ];
     }
 
-    /**
-     * @return array<string,mixed>
-     */
     private function summaryForAllProjects(int $userId, string $role): array
     {
+        // Fix: paginateForUser requires ($userId, $role, $filters, $page, $perPage)
         $projects = $this->projects->paginateForUser($userId, $role, [], 1, 1000)['items'];
 
         $totals = [
@@ -160,11 +143,6 @@ final class DashboardService
         return $totals;
     }
 
-    /**
-     * Chart data for a project.
-     *
-     * @return array<string,mixed>
-     */
     public function charts(int $userId, string $role, int $projectId): array
     {
         $this->assertCanRead($projectId, $userId, $role);

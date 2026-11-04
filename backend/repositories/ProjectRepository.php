@@ -226,22 +226,30 @@ final class ProjectRepository
     // Aggregates
     // -----------------------------------------------------------------------
 
-    /**
+        /**
      * @return array<string,int>
      */
     public function statistics(int $projectId): array
     {
         $sql = 'SELECT
-                    (SELECT COUNT(*) FROM requirements WHERE project_id = :p) AS requirements,
-                    (SELECT COUNT(*) FROM test_cases WHERE project_id = :p) AS test_cases,
-                    (SELECT COUNT(*) FROM test_suites WHERE project_id = :p) AS test_suites,
-                    (SELECT COUNT(*) FROM test_plans WHERE project_id = :p) AS test_plans,
-                    (SELECT COUNT(*) FROM test_runs WHERE project_id = :p) AS test_runs,
-                    (SELECT COUNT(*) FROM defects WHERE project_id = :p) AS defects,
-                    (SELECT COUNT(*) FROM defects WHERE project_id = :p AND status NOT IN (\'closed\',\'verified\',\'rejected\',\'duplicate\')) AS open_defects';
+                    (SELECT COUNT(*) FROM requirements WHERE project_id = :p1) AS requirements,
+                    (SELECT COUNT(*) FROM test_cases WHERE project_id = :p2) AS test_cases,
+                    (SELECT COUNT(*) FROM test_suites WHERE project_id = :p3) AS test_suites,
+                    (SELECT COUNT(*) FROM test_plans WHERE project_id = :p4) AS test_plans,
+                    (SELECT COUNT(*) FROM test_runs WHERE project_id = :p5) AS test_runs,
+                    (SELECT COUNT(*) FROM defects WHERE project_id = :p6) AS defects,
+                    (SELECT COUNT(*) FROM defects WHERE project_id = :p7 AND status NOT IN (\'closed\',\'verified\',\'rejected\',\'duplicate\')) AS open_defects';
 
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([':p' => $projectId]);
+        $stmt->execute([
+            ':p1' => $projectId,
+            ':p2' => $projectId,
+            ':p3' => $projectId,
+            ':p4' => $projectId,
+            ':p5' => $projectId,
+            ':p6' => $projectId,
+            ':p7' => $projectId,
+        ]);
         $row = $stmt->fetch();
 
         if ($row === false) {

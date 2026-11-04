@@ -158,7 +158,8 @@ $container->singleton(DashboardService::class, fn ($c) => new DashboardService(
     $c->get(RequirementRepository::class),
     $c->get(TestCaseRepository::class),
     $c->get(TestResultRepository::class),
-    $c->get(DefectRepository::class)
+    $c->get(DefectRepository::class),
+    $c->get(EnvironmentRepository::class)
 ));
 
 $container->singleton(ReportService::class, fn ($c) => new ReportService(

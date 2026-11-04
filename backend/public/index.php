@@ -12,7 +12,7 @@ declare(strict_types=1);
 // ---------------------------------------------------------------------------
 // Error reporting (development vs production is decided after .env is loaded).
 // ---------------------------------------------------------------------------
-ini_set('display_errors', '0');
+ini_set('display_errors', '1');
 ini_set('log_errors', '1');
 error_reporting(E_ALL);
 
